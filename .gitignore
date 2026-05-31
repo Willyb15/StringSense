@@ -1,0 +1,19 @@
+# macOS
+.DS_Store
+
+# Xcode user data (machine-specific, not needed by collaborators)
+*.xcodeproj/xcuserdata/
+*.xcodeproj/project.xcworkspace/xcuserdata/
+*.xcworkspace/xcuserdata/
+
+# Build output
+build/
+DerivedData/
+
+# Swift Package Manager
+.swiftpm/
+
+# Scripts used to generate the project (optional to keep)
+generate_xcodeproj.py
+make_icon.swift
+AppIcon-1024.png
