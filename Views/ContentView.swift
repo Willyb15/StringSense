@@ -20,12 +20,6 @@ struct ContentView: View {
                         Label("Metronome", systemImage: "metronome.fill")
                     }
                     .tag(1)
-
-                PracticeTimerView()
-                    .tabItem {
-                        Label("Timer", systemImage: "timer")
-                    }
-                    .tag(2)
             }
             .tint(.green)
         }

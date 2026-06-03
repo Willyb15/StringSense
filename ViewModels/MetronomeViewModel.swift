@@ -4,16 +4,27 @@ import SwiftUI
 
 struct TimeSignature: Equatable {
     let beats: Int
-    let noteValue: Int  // 4=quarter, 8=eighth gets the beat
+    let noteValue: Int      // 4=quarter, 8=eighth gets the beat
+    let defaultAccents: Set<Int>
     var label: String { "\(beats)/\(noteValue)" }
 
+    init(beats: Int, noteValue: Int, defaultAccents: Set<Int>? = nil) {
+        self.beats = beats
+        self.noteValue = noteValue
+        self.defaultAccents = defaultAccents ?? [0]
+    }
+
     static let presets: [TimeSignature] = [
-        TimeSignature(beats: 2, noteValue: 4),
-        TimeSignature(beats: 3, noteValue: 4),
-        TimeSignature(beats: 4, noteValue: 4),
-        TimeSignature(beats: 5, noteValue: 4),
-        TimeSignature(beats: 6, noteValue: 4),
-        TimeSignature(beats: 7, noteValue: 8),
+        TimeSignature(beats: 2,  noteValue: 4),
+        TimeSignature(beats: 3,  noteValue: 4),
+        TimeSignature(beats: 4,  noteValue: 4),
+        TimeSignature(beats: 5,  noteValue: 4),
+        TimeSignature(beats: 6,  noteValue: 4),
+        TimeSignature(beats: 7,  noteValue: 4),
+        TimeSignature(beats: 6,  noteValue: 8, defaultAccents: [0, 3]),
+        TimeSignature(beats: 7,  noteValue: 8),
+        TimeSignature(beats: 9,  noteValue: 8, defaultAccents: [0, 3, 6]),
+        TimeSignature(beats: 12, noteValue: 8, defaultAccents: [0, 3, 6, 9]),
     ]
 }
 
@@ -29,9 +40,7 @@ class MetronomeViewModel: ObservableObject {
 
     @Published var timeSignature = TimeSignature(beats: 4, noteValue: 4) {
         didSet {
-            // Keep only accents that are still in range
-            accentedBeats = accentedBeats.filter { $0 < timeSignature.beats }
-            if accentedBeats.isEmpty { accentedBeats = [0] }
+            accentedBeats = timeSignature.defaultAccents
             if isPlaying { restart() }
         }
     }

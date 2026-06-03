@@ -79,16 +79,39 @@ struct MetronomeView: View {
     }
 
     private var bpmDisplay: some View {
-        VStack(spacing: 2) {
+        VStack(spacing: 8) {
             Text("\(Int(vm.bpm.rounded()))")
                 .font(.system(size: 72, weight: .thin, design: .rounded))
                 .contentTransition(.numericText())
                 .animation(.snappy, value: Int(vm.bpm.rounded()))
+
             Text("BPM")
                 .font(.caption)
                 .foregroundStyle(.secondary)
                 .kerning(2)
+
+            HStack(spacing: 10) {
+                nudgeButton(label: "−5", amount: -5)
+                nudgeButton(label: "−1", amount: -1)
+                Spacer()
+                nudgeButton(label: "+1", amount: 1)
+                nudgeButton(label: "+5", amount: 5)
+            }
+            .padding(.horizontal, 32)
         }
+    }
+
+    private func nudgeButton(label: String, amount: Double) -> some View {
+        Button {
+            vm.bpm = min(300, max(20, vm.bpm + amount))
+            if vm.isPlaying { vm.restart() }
+        } label: {
+            Text(label)
+                .font(.system(size: 15, weight: .medium, design: .rounded))
+                .frame(width: 48, height: 36)
+                .background(Color.white.opacity(0.08), in: RoundedRectangle(cornerRadius: 10))
+        }
+        .buttonStyle(.plain)
     }
 
     private var bpmSlider: some View {
